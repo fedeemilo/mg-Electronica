@@ -6,7 +6,6 @@ const logger = require('morgan');
 
 // RESTful routes
 const index     = require('./routes/index');
-const users     = require('./routes/users');
 const reviews   = require('./routes/reviews');
 const posts     = require('./routes/posts');
 
@@ -25,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/posts', posts);
 app.use('/posts/:id/reviews', reviews);
-app.use('/users', users);
+
 
 //Basic middleware for allowing me to pass an error to the next middleware
 // catch 404 and forward to error handler
