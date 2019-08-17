@@ -5,9 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 // RESTful routes
-const index = require('./routes/index');
-const users = require('./routes/users');
-const posts = require('./routes/posts');
+const index     = require('./routes/index');
+const users     = require('./routes/users');
+const reviews   = require('./routes/reviews');
+const posts     = require('./routes/posts');
 
 const app = express();
 
@@ -22,8 +23,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/posts', posts);
+app.use('/posts/:id/reviews', reviews);
+app.use('/users', users);
 
 //Basic middleware for allowing me to pass an error to the next middleware
 // catch 404 and forward to error handler
