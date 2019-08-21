@@ -1,11 +1,44 @@
 <h1>Edit Post!</h1>
 
-<form action="/posts/<%= post.id %>?_method=PUT" method="POST">
+<form action="/posts/<%= post.id %>?_method=PUT" method="POST" id="postEditForm">
 
     <div><input type="text" name='post[title]' placeholder="Título" value='<%= post.title %>'></div>
     <div><input type="text" name='post[price]' placeholder="Precio" value='<%= post.price %>'></div>
+    <div>
+        <input type="file" id="imageUpload" accept="images/*" name='images' multiple />
+        <div>
+            <% post.images.forEach(function(image, i) { %>
+                <img src="<%= image.url %>" width="100px" />
+                <label for="image<%= i %>">Delete?</label>
+                <input type="checkbox" name="deleteImage" class="imageDeleteCheckbox" id="<%= i %>" value="<%= image.public_id %>">
+            <% }); %>
+        </div>
+    </div>
     <div><textarea name="" id="" cols="30" rows="10" name='post[decription]' placeholder="Descripción"><%= post.description %></textarea></div>
     <div><input type="text" name='post[location]' placeholder="Ubicación" value='<%= post.location %>'></div>
 
     <input type="submit">
 </form>
+
+<script>
+    // encontrar el form de post edit
+    let postEditForm = document.getElementById('postEditForm');
+    // añadir un listener al submit del form
+    postEditForm.addEventListener('submit', function(event) {
+        // encontrar cantidad de imágenes subidas
+        let imageUploads = document.getElementById('imageUpload').files.length;
+        // saber el número total de imágenes subidas
+        let existingImgs = document.querySelectorAll('.imageDeleteCheckbox').length;
+        // saber el total de posibles imágenes a borrar (checkbox:checked)
+        let imgDeletions = document.querySelectorAll('.imageDeleteCheckbox:checked').length;
+        // averiguar si el form puede mandarse o no (submit or not)
+        let newTotal = existingImgs - imgDeletions + imageUploads;
+ 
+        if (newTotal > 4) {
+            event.preventDefault();
+            let removalAmt = newTotal - 4
+            alert(`Debes remover al menos ${removalAmt} imáge${removalAmt === 1 ? 'n' : 'nes'}!`);
+        }
+    });
+    
+</script>
