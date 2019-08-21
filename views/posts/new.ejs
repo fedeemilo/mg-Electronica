@@ -1,17 +1,15 @@
 <h1>New Post!</h1>
 
-<form action="/posts" method="POST">
+<form action="/posts" method="POST" enctype="multipart/form-data"> 
 
-    <div><input type="text" name='title' placeholder="Título"></div>
-    <div><input type="text" name='price' placeholder="Precio"></div>
-    <div><textarea name="" id="" cols="30" rows="10" name='decription' placeholder="Descripción"></textarea></div>
-    <div><input type="text" name='location' placeholder="Ubicación"></div>
+    <div><input type="text" name='post[title]' placeholder="Título"></div>
+    <div><input type="text" name='post[price]' placeholder="Precio"></div>
+    <div>
+        <input type="file" accept="images/*" name='images' multiple />
+    </div>
+    <div><textarea name="" id="" cols="30" rows="10" name='post[decription]' placeholder="Descripción"></textarea></div>
+    <div><input type="text" name='post[location]' placeholder="Ubicación"></div>
 
     <input type="submit">
 </form>
 
-<!-- title: String,
-price: String,
-description: String,
-location: String, -->
-    
