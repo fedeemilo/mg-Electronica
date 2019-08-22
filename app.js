@@ -31,6 +31,8 @@ db.once('open', function() {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+// setup public assets directory
+app.use(express.static('public'));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -53,7 +55,7 @@ app.use(passport.session());
 // CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser())
+passport.deserializeUser(User.deserializeUser());
 
 // Mount routes
 app.use('/', index);
