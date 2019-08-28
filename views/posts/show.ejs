@@ -1,38 +1,4 @@
 <% layout('layouts/post-show-layout') -%>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css' rel='stylesheet' />
-
-<style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-
-      #map {
-        width: 350px;
-        height: 200px;
-      }
-
-      .marker {
-        background-image: url('/images/mapbox-icon.png');
-        background-size: cover;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-
-      .mapboxgl-popup {
-        max-width: 200px;
-      }
-
-      .mapboxgl-popup-content {
-        text-align: center;
-        font-family: 'Open Sans', sans-serif;
-      }
-</style>
-
 <h1><%= post.title %></h1>
 <div>Price: <%= post.price %></div>
 <div><%= post.description %></div>
@@ -55,27 +21,17 @@
 </div>
 
 
-<script>
-var post = <%- JSON.stringify(post) %>;
-mapboxgl.accessToken = 'pk.eyJ1IjoiZmVkZWVtaWxvOTEiLCJhIjoiY2p6bG44dnp3MHhpYTNtb2FqbnZxcjY0ayJ9.z712YCPH8PLoCgSqtldzsQ';
-
-var map = new mapboxgl.Map({
-  container: 'map',
-  style: 'mapbox://styles/mapbox/light-v10',
-  center: post.coordinates,
-  zoom: 6
-});
-
-
-// create a HTML element for our post location/marker
-  var el = document.createElement('div');
-  el.className = 'marker';
-
-// make a marker for our location and add to the map
-  new mapboxgl.Marker(el)
-    .setLngLat(post.coordinates)
-    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-    .setHTML('<h3>' + post.title + '</h3><p>' + post.location + '</p>'))
-    .addTo(map);
-
-</script>
+<h2>Hacer un comentario</h2>
+<form action="/posts/<%= post.id %>/reviews" method='POST'>
+    <textarea name="review[body]" cols="30" rows="10" required></textarea>
+    <input name="review[rating]" type="number" min="1" max="5" step="1" required>
+    <input type="submit">
+</form>
+<h3>Comentarios</h3>
+<%# display all reviews %>
+<% post.reviews.forEach(function(review) { %>
+    <div>
+        <%= review.body %>
+        Rating: <%= review.rating %>
+    </div>
+<% }); %>

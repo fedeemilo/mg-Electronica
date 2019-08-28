@@ -12,11 +12,11 @@ module.exports = {
     //POSTS INDEX
     async postIndex(req, res, next) {
         let posts = await Post.find({});
-        res.render('posts/index', { posts: posts });
+        res.render('posts/index', { posts, title: 'MG Productos' });
     },
     //POSTS NEW
     postNew(req, res, next) {
-        res.render('posts/new');
+        res.render('posts/new', {title: 'MG Electrónica'});
     },
 
     //POSTS CREATE
@@ -37,19 +37,24 @@ module.exports = {
             .send();
         req.body.post.coordinates = response.body.features[0].geometry.coordinates;
         let post = await Post.create(req.body.post);
+        req.session.success = 'Producto cargado con éxito!'
         res.redirect(`/posts/${post.id}`);
     },
 
    //POSTS SHOW
    async postShow(req, res, next) {
-       let post = await Post.findById(req.params.id);
-       res.render('./posts/show', { post })
+       let post = await Post.findById(req.params.id).populate({
+          path: 'reviews',
+          options: { sort: {'_id': -1} }
+        });
+       res.render('./posts/show', { post, title: 'MG Producto'})
    },
 
    //POSTS EDIT
    async postEdit(req, res, next) {
        let post = await Post.findById(req.params.id);
-       res.render('posts/edit', { post });
+       res.render('posts/edit', { post, title: 'MG Editar'});
+
    },
 
    //POSTS UPDATE

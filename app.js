@@ -22,7 +22,7 @@ const posts     = require('./routes/posts');
 const app = express();
 
 //connect to database
-mongoose.connect('mongodb://localhost:27017/mg-electronica-mapbox', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/mg-electronica', {useNewUrlParser: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -61,6 +61,21 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// set local variables middleware
+app.use(function(req, res, next) {
+  // SET DEFAULT PAGE TITLE
+  res.locals.title = 'MG Electrónica';
+  // SET SUCCESS FLASH MESSAGE
+  res.locals.success = req.session.success || '';
+  // delete the success property off of the req.session object
+  delete req.session.sucess;
+  // SET ERROR FLASH MESSAGE
+  res.locals.error = req.session.error || '';
+  delete req.session.error;
+  // continue on to next function in middleware chain
+  next();
+});
+
 // Mount routes
 app.use('/', index);
 app.use('/posts', posts);
@@ -75,13 +90,16 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // // set locals, only providing error in development
+  // res.locals.message = err.message;
+  // res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // // render the error page
+  // res.status(err.status || 500);
+  // res.render('error');
+  console.log(err);
+  req.session.error = err.message;
+  res.redirect('back');
 });
 
 module.exports = app;
