@@ -63,6 +63,11 @@ passport.deserializeUser(User.deserializeUser());
 
 // set local variables middleware
 app.use(function(req, res, next) {
+  req.user = {
+    '_id': '5d65e75889cdc731549a87fe',
+    'username': 'fede'
+  }
+  res.locals.currentUser = req.user;
   // SET DEFAULT PAGE TITLE
   res.locals.title = 'MG Electrónica';
   // SET SUCCESS FLASH MESSAGE

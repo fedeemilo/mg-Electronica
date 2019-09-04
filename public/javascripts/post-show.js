@@ -1,10 +1,10 @@
-mapboxgl.accessToken = process.env.MAPBOX_TOKEN;
 
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmVkZWVtaWxvOTEiLCJhIjoiY2p6bG44dnp3MHhpYTNtb2FqbnZxcjY0ayJ9.z712YCPH8PLoCgSqtldzsQ';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/light-v10',
+    style: 'mapbox://styles/mapbox/streets-v11',
     center: post.coordinates,
-    zoom: 6
+    zoom: 5
 });
 
 // create a HTML element for our post location/marker

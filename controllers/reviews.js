@@ -7,7 +7,7 @@ module.exports = {
          // find the post by its id
          let post = await Post.findById(req.params.id);
          // create the review
-        //  req.body.review.author = req.user._id
+         req.body.review.author = req.user._id
          let review = await Review.create(req.body.review);
          // assign review to post
         post.reviews.push(review);
@@ -20,7 +20,9 @@ module.exports = {
 
    //REVIEWS UPDATE
    async reviewUpdate(req, res, next){
-      
+      await Review.findByIdAndUpdate(req.params.review_id, req.body.review);
+      req.session.success = 'Comentario actualizado exitosamente!' 
+      res.redirect(`/posts/${req.params.id}`);
    },
 
    //REVIEWS DESTROY

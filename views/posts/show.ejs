@@ -31,7 +31,28 @@
 <%# display all reviews %>
 <% post.reviews.forEach(function(review) { %>
     <div>
-        <%= review.body %>
+        <strong><%= review.author.username %></strong><br>
+        <%= review.body %><br>
         Rating: <%= review.rating %>
     </div>
+    <div>
+        <%# add toggle edit button to the post show view %>
+        <button class="toggle-edit-form">Editar</button>
+        <%# add edit form to the post show view %>
+        <form action="/posts/<%= post.id %>/reviews/<%= review.id %>?_method=PUT" method="POST" class="edit-review-form">
+            <textarea name="review[body]" cols="30" rows="10" required><%= review.body %></textarea>
+            <input name="review[rating]" type="number" min="1" max="5" step="1" value="<%= review.rating %>" required>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+    <hr>
 <% }); %>
+
+<script>
+    $('.toggle-edit-form').on('click', function() {
+        // toggle the edit button text on click
+        $(this).text() === 'Editar' ? $(this).text('Cancelar') : $(this).text('Editar');
+        // toggle visibility of the edit review form
+        $(this).siblings('.edit-review-form').toggle();
+    });
+</script>
